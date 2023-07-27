@@ -1,15 +1,15 @@
 import express from "express";
-import { userRouter } from "./user.router";
+import { eventRouter } from "./event.router";
 import { loggerMiddleware } from "../middlewares";
 
 const router = express.Router();
 
 router.use(loggerMiddleware);
 
-router.get("/", function (req, res) {
-  res.send("Hello World!");
+router.get("/health", function (req, res) {
+  res.send(200);
 });
 
-router.use("/users", userRouter);
+router.use("/events", eventRouter);
 
 export { router };

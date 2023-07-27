@@ -1,10 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { db } from "../src/container";
 import { logger } from "../src/utils";
 
-const prisma = new PrismaClient();
-
 async function main() {
-  await prisma.users.upsert({
+  await db.users.upsert({
     where: { email: "elmoussel12@gmail.com" },
     update: {},
     create: {
@@ -21,12 +19,12 @@ async function main() {
 
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    await db.$disconnect();
 
     logger.info("Seed completed successfully!");
   })
   .catch(async (err) => {
-    await prisma.$disconnect();
+    await db.$disconnect();
 
     logger.info(`Seed failed due to ${err}`);
   });

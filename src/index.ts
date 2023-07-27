@@ -1,8 +1,9 @@
 import { configs } from "./configs";
-import { app, db } from "./loaders";
+import { db } from "./container";
+import { app } from "./loaders";
 import { logger } from "./utils";
 
-db.connect()
+db.$connect()
   .then(() => {
     logger.info("Database connected successfully!");
 
