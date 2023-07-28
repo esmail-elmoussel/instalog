@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { EventService, UserService } from "../services";
-import { EventCreationDTO } from "../dtos";
+import { CreateEventDTO, GetEventsDTO } from "../dtos";
 
 export class EventController {
   constructor(
@@ -9,13 +9,15 @@ export class EventController {
   ) {}
 
   getAll = async (req: Request, res: Response) => {
-    const events = await this.service.getAll();
+    const { query } = req as unknown as { query: GetEventsDTO };
+
+    const events = await this.service.getAll(query);
 
     res.json(events);
   };
 
   create = async (req: Request, res: Response) => {
-    const { body } = req as { body: EventCreationDTO };
+    const { body } = req as { body: CreateEventDTO };
 
     const users = await this.userService.getAll();
 
