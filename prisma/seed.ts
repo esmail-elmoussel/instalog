@@ -2,7 +2,7 @@ import { db } from "../src/container";
 import { logger } from "../src/utils";
 
 async function main() {
-  await db.users.upsert({
+  await db.user.upsert({
     where: { email: "elmoussel12@gmail.com" },
     update: {},
     create: {
