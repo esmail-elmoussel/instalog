@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { Pagination } from "../types/pagination.types";
+import { PaginationDTO, PaginationResult } from "../types/pagination.types";
 
 export class EventRepository {
   private readonly schema;
@@ -8,12 +8,23 @@ export class EventRepository {
     this.schema = db.event;
   }
 
-  getAll = async (pagination: Pagination) => {
+  getAll = async (pagination: PaginationDTO) => {
     const skip = (pagination.pageNumber - 1) * pagination.pageSize;
 
     const events = await this.schema.findMany({
       skip,
       take: pagination.pageSize,
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
+        },
+      },
       orderBy: { updatedAt: "desc" },
     });
 
@@ -21,13 +32,15 @@ export class EventRepository {
 
     const totalPages = Math.ceil(totalCount / pagination.pageSize);
 
-    return {
+    const paginationResult: PaginationResult<typeof events> = {
       totalCount,
       currentPage: pagination.pageNumber,
       totalPages,
       pageSize: pagination.pageSize,
-      items: [events],
+      items: events,
     };
+
+    return paginationResult;
   };
 
   create = async (entity: Prisma.EventUncheckedCreateInput) => {
