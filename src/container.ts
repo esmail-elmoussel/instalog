@@ -1,10 +1,14 @@
 import { PrismaClient } from "@prisma/client";
-import { EventController } from "./controllers/event.controller";
-import { EventRepository } from "./repositories/event.repository";
-import { EventService } from "./services/event.service";
+import { EventController } from "./controllers";
+import { EventRepository, UserRepository } from "./repositories";
+import { EventService, UserService } from "./services";
 
 export const db = new PrismaClient();
 
-export const eventRepository = new EventRepository(db);
-export const eventService = new EventService(eventRepository);
-export const eventController = new EventController(eventService);
+const eventRepository = new EventRepository(db);
+const userRepository = new UserRepository(db);
+
+const eventService = new EventService(eventRepository);
+const userService = new UserService(userRepository);
+
+export const eventController = new EventController(eventService, userService);
