@@ -1,6 +1,6 @@
+import { app } from "./app";
 import { configs } from "./configs";
 import { db } from "./container";
-import { app } from "./loaders";
 import { logger } from "./utils";
 
 db.$connect()
