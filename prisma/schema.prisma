@@ -21,6 +21,6 @@ model events {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      users?   @relation(fields: [userId], references: [id])
-  userId    String?
+  user      users    @relation(fields: [userId], references: [id])
+  userId    String
 }

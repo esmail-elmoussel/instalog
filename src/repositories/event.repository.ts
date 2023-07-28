@@ -1,9 +1,17 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 export class EventRepository {
-  constructor(private readonly db: PrismaClient) {}
+  private readonly schema;
+
+  constructor(db: PrismaClient) {
+    this.schema = db.events;
+  }
 
   getAll = async () => {
-    return this.db.events.findMany();
+    return this.schema.findMany();
+  };
+
+  create = async (entity: Prisma.eventsUncheckedCreateInput) => {
+    return this.schema.create({ data: entity });
   };
 }

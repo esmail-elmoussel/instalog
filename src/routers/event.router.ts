@@ -1,8 +1,15 @@
 import express from "express";
 import { eventController } from "../container";
+import { requestValidationMiddleware } from "../middlewares";
+import { createEventSchema } from "../dtos";
 
 const eventRouter = express.Router();
 
 eventRouter.get("/", eventController.getAll);
+eventRouter.post(
+  "/",
+  requestValidationMiddleware(createEventSchema),
+  eventController.create,
+);
 
 export { eventRouter };
