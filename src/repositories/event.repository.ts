@@ -59,6 +59,6 @@ export class EventRepository {
   };
 
   create = async (entity: Prisma.EventUncheckedCreateInput) => {
-    return this.schema.create({ data: entity });
+    return this.schema.create({ data: entity, include: { user: true } });
   };
 }
