@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { PaginationDTO, PaginationResult } from "../types/pagination.types";
+import { PaginationResult } from "../types/pagination.types";
+import { GetEventsDTO } from "../dtos";
 
 export class EventRepository {
   private readonly schema;
@@ -8,35 +9,49 @@ export class EventRepository {
     this.schema = db.event;
   }
 
-  getAll = async (pagination: PaginationDTO) => {
-    const skip = (pagination.pageNumber - 1) * pagination.pageSize;
+  getAll = async (getEventsDTO: GetEventsDTO) => {
+    const skip = (getEventsDTO.pageNumber - 1) * getEventsDTO.pageSize;
+
+    const where: Prisma.EventWhereInput = {};
+
+    if (getEventsDTO.search) {
+      where.OR = [
+        { id: { contains: getEventsDTO.search } },
+        { name: { contains: getEventsDTO.search } },
+        { user: { id: { contains: getEventsDTO.search } } },
+        { user: { name: { contains: getEventsDTO.search } } },
+        { user: { email: { contains: getEventsDTO.search } } },
+      ];
+    }
 
     const events = await this.schema.findMany({
       skip,
-      take: pagination.pageSize,
+      take: getEventsDTO.pageSize,
       select: {
         id: true,
         name: true,
         createdAt: true,
         user: {
           select: {
+            id: true,
             name: true,
             email: true,
           },
         },
       },
+      where,
       orderBy: { updatedAt: "desc" },
     });
 
-    const totalCount = await this.schema.count();
+    const totalCount = await this.schema.count({ where });
 
-    const totalPages = Math.ceil(totalCount / pagination.pageSize);
+    const totalPages = Math.ceil(totalCount / getEventsDTO.pageSize);
 
     const paginationResult: PaginationResult<typeof events> = {
       totalCount,
-      currentPage: pagination.pageNumber,
+      currentPage: getEventsDTO.pageNumber,
       totalPages,
-      pageSize: pagination.pageSize,
+      pageSize: getEventsDTO.pageSize,
       items: events,
     };
 

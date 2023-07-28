@@ -1,12 +1,11 @@
-import { CreateEventDTO } from "../dtos";
+import { CreateEventDTO, GetEventsDTO } from "../dtos";
 import { EventRepository } from "../repositories";
-import { PaginationDTO } from "../types/pagination.types";
 
 export class EventService {
   constructor(private readonly repository: EventRepository) {}
 
-  getAll = async (pagination: PaginationDTO) => {
-    return this.repository.getAll(pagination);
+  getAll = async (getEventsDTO: GetEventsDTO) => {
+    return this.repository.getAll(getEventsDTO);
   };
 
   create = async (entity: { name: CreateEventDTO["name"]; userId: string }) => {
