@@ -1,13 +1,16 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
 export class UserRepository {
   private readonly schema;
 
-  constructor(db: PrismaClient) {
+  constructor(private readonly db: PrismaClient) {
     this.schema = db.user;
   }
 
-  getAll = async () => {
-    return this.schema.findMany();
+  getRandomOne = async (): Promise<User | undefined> => {
+    const [user] = (await this.db
+      .$queryRaw`SELECT * FROM users ORDER BY RANDOM() LIMIT 1`) as User[];
+
+    return user;
   };
 }

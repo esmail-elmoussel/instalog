@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { EventService, UserService } from "../services";
 import { CreateEventDTO, GetEventsDTO } from "../dtos";
+import { logger } from "../utils";
 
 export class EventController {
   constructor(
@@ -19,10 +20,17 @@ export class EventController {
   create = async (req: Request, res: Response) => {
     const { body } = req as { body: CreateEventDTO };
 
-    const users = await this.userService.getAll();
+    const user = await this.userService.getRandomOne();
+
+    if (!user) {
+      const err = "No users exists, please run seed firsts!";
+
+      logger.error(err);
+      throw new Error(err);
+    }
 
     const events = await this.service.create({
-      userId: users[0].id, // putting a static userId for demo purposes!
+      userId: user.id, // putting a random userId for demo purposes!
       ...body,
     });
 
