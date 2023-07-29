@@ -1,6 +1,19 @@
+"use client";
+import { useGetEvents } from "@/app/services";
 import { Row } from "./row";
+import { useMemo } from "react";
 
 export function ActivityTable() {
+  const { data: pages, loadMore } = useGetEvents();
+
+  const showLoadMore: boolean = useMemo(() => {
+    if (!pages) {
+      return true;
+    }
+
+    return pages[pages.length - 1].currentPage < pages[0].totalPages;
+  }, [pages]);
+
   return (
     <div className="flex flex-col not-prose relative rounded-xl bg-instalog-primary">
       <input
@@ -25,24 +38,20 @@ export function ActivityTable() {
         </thead>
 
         <tbody className="bg-white ">
-          <Row
-            event={{
-              id: "123",
-              name: "login",
-              createdAt: new Date(),
-              user: {
-                id: "123",
-                name: "Esmail Elmoussel",
-                email: "elmoussel12@gmail.com",
-              },
-            }}
-          />
+          {pages?.map((page) =>
+            page.items.map((event) => <Row key={event.id} event={event} />)
+          )}
         </tbody>
       </table>
 
-      <button className="flex justify-center rounded-b-xl w-full py-4 uppercase font-medium text-sm text-instalog-secondary">
-        Load more
-      </button>
+      {showLoadMore && (
+        <button
+          onClick={loadMore}
+          className="flex justify-center rounded-b-xl w-full py-4 uppercase font-medium text-sm text-instalog-secondary"
+        >
+          Load more
+        </button>
+      )}
 
       <div className="absolute inset-0 pointer-events-none border border-instalog-primary rounded-xl"></div>
     </div>
