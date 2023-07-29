@@ -1,10 +1,13 @@
 "use client";
 import { useGetEvents } from "@/app/services";
 import { Row } from "./row";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import debounce from "lodash.debounce";
 
 export function ActivityTable() {
-  const { data: pages, loadMore } = useGetEvents();
+  const [search, setSearch] = useState<string>();
+
+  const { data: pages, loadMore } = useGetEvents(search);
 
   const showLoadMore: boolean = useMemo(() => {
     if (!pages) {
@@ -14,12 +17,15 @@ export function ActivityTable() {
     return pages[pages.length - 1].currentPage < pages[0].totalPages;
   }, [pages]);
 
+  const debouncedHandleSearchChange = debounce(setSearch, 500);
+
   return (
     <div className="flex flex-col not-prose relative rounded-xl bg-instalog-primary">
       <input
         type="search"
         className="m-4 p-4 text-sm border rounded-lg bg-instalog-primary focus:bg-white placeholder-kaka-baba"
         placeholder="Search name, email or action..."
+        onChange={(e) => debouncedHandleSearchChange(e.target.value)}
       />
 
       <table className="border-collapse table-auto w-full text-sm">

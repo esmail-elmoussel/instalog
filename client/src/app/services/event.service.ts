@@ -7,7 +7,7 @@ const fetcher = async (args: RequestInfo | URL): Promise<any> => {
   return response.json();
 };
 
-export const useGetEvents = () => {
+export const useGetEvents = (search?: string) => {
   const swrResponse = useSWRInfinite<PaginationResult<Event[]>>(
     (_, previousPageData: PaginationResult<Event[]> | null) => {
       if (
@@ -17,9 +17,15 @@ export const useGetEvents = () => {
         return null;
       }
 
-      return `http://localhost:9000/api/v1/events?pageNumber=${
+      let url = `http://localhost:9000/api/v1/events?pageNumber=${
         (previousPageData?.currentPage || 0) + 1
       }&pageSize=10`;
+
+      if (search) {
+        url += `&search=${search}`;
+      }
+
+      return url;
     },
     fetcher,
     { initialSize: 1 }
