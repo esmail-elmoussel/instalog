@@ -19,8 +19,11 @@ module.exports = {
     },
     colors: {
       ...colors,
-      primary: "#F5F5F5",
-      secondary: "#616161",
+      instalog: {
+        primary: "#F5F5F5",
+        secondary: "#616161",
+        placeholder: "#959595",
+      },
     },
   },
   plugins: [],

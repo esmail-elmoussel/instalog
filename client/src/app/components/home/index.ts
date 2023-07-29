@@ -1,1 +1,1 @@
-export * from "./activity-table.component";
+export * from "./activity-table";
