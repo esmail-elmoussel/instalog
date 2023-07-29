@@ -1,3 +1,5 @@
+import { Row } from "./row";
+
 export function ActivityTable() {
   return (
     <div className="flex flex-col not-prose relative rounded-xl bg-instalog-primary">
@@ -21,6 +23,21 @@ export function ActivityTable() {
             </th>
           </tr>
         </thead>
+
+        <tbody className="bg-white ">
+          <Row
+            event={{
+              id: "123",
+              name: "login",
+              createdAt: new Date(),
+              user: {
+                id: "123",
+                name: "Esmail Elmoussel",
+                email: "elmoussel12@gmail.com",
+              },
+            }}
+          />
+        </tbody>
       </table>
 
       <button className="flex justify-center rounded-b-xl w-full py-4 uppercase font-medium text-sm text-instalog-secondary">
