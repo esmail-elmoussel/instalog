@@ -6,7 +6,7 @@ export function Search({ onChange }: { onChange: (text: string) => void }) {
   return (
     <input
       type="search"
-      className="m-4 p-4 text-sm border rounded-lg bg-instalog-primary focus:bg-white placeholder-kaka-baba"
+      className="m-4 p-3 text-sm border rounded-lg bg-instalog-primary focus:bg-white placeholder-kaka-baba"
       placeholder="Search name, email or action..."
       onChange={(e) => debouncedOnChange(e.target.value)}
     />

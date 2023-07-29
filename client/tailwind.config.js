@@ -23,6 +23,7 @@ module.exports = {
         primary: "#F5F5F5",
         secondary: "#616161",
         placeholder: "#959595",
+        border: "#DFDFDF",
       },
     },
   },

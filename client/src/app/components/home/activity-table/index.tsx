@@ -5,6 +5,8 @@ import { Row } from "./row.component";
 import { useMemo, useState } from "react";
 import { Search } from "./search.component";
 
+const tableHeader = ["Actor", "Action", "Date"];
+
 export function ActivityTable() {
   const [search, setSearch] = useState<string>();
 
@@ -25,19 +27,18 @@ export function ActivityTable() {
       <table className="border-collapse table-auto w-full text-sm">
         <thead>
           <tr>
-            <th className="border-b font-medium p-4 pl-8 pt-0 pb-3 text-instalog-secondary text-left uppercase">
-              Actor
-            </th>
-            <th className="border-b font-medium p-4 pt-0 pb-3 text-instalog-secondary text-left uppercase">
-              Action
-            </th>
-            <th className="border-b font-medium p-4 pr-8 pt-0 pb-3 text-instalog-secondary text-left uppercase">
-              Date
-            </th>
+            {tableHeader.map((header) => (
+              <th
+                key={header}
+                className="border-b font-medium p-4 pl-4 pt-0 pb-3 text-instalog-secondary text-left uppercase w-1/3"
+              >
+                {header}
+              </th>
+            ))}
           </tr>
         </thead>
 
-        <tbody className="bg-white ">
+        <tbody className="bg-white">
           {pages?.map((page) =>
             page.items.map((event) => <Row key={event.id} event={event} />)
           )}
