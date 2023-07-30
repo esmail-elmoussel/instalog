@@ -17,7 +17,7 @@ export const useGetEvents = (search?: string) => {
         return null;
       }
 
-      let url = `http://localhost:9000/api/v1/events?pageNumber=${
+      let url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/events?pageNumber=${
         (previousPageData?.currentPage || 0) + 1
       }&pageSize=10`;
 
