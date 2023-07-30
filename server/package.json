@@ -4,8 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "nodemon ./src/index.ts",
+    "start:prod": "node dist/src/index.js",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "seed:up": "ts-node prisma/seed.ts",
     "migration:up": "npx prisma migrate dev --name init"
